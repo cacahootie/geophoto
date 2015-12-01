@@ -1,0 +1,44 @@
+
+body, html {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+div#container {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+div#main {
+	width: 100%;
+	height: 95%;
+}
+
+div#map {
+	float: left;
+	height: 100%;
+	width: 50%;
+}
+
+div#content {
+	width: 50%;
+	height: 100%;
+	vertical-align: middle;
+	background: #000000;
+	float: left;
+	white-space: nowrap;
+}
+
+img.gallery {
+	width: 100%;
+	vertical-align: middle;
+}
+
+.vhelper {
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+}
