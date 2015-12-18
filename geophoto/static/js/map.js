@@ -11,8 +11,6 @@ var MapState = new MapState();
 var MapView = BaseView.extend({
     el: '#main',
     template: $("#mapview_templ").html(),
-    map: null,
-    settings: {},
     set_state: function (e) {
         MapState.set('mapCenter', this.map.getCenter());
         MapState.set('mapZoom', this.map.getZoom());
@@ -44,7 +42,7 @@ var MapView = BaseView.extend({
             if (self.photo) {
                 self.photo_selected(self.photo);
             } else {
-                self.photo_selected(d[0])
+                self.photo_selected(d.results[0])
             }
         });
         return this;
@@ -52,7 +50,7 @@ var MapView = BaseView.extend({
     display_layer: false,
     source_layer: false,
     photo_selected: function(d) {
-        $('#gallery-photo').attr('src',this.photos[d].src);
+        $('#gallery-photo').attr('src',d.src);
     },
     load_layer: function(d) {
         var map = this.map;
