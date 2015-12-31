@@ -63,15 +63,15 @@ var MapView = BaseView.extend({
     	try {
             map.removeLayer(display_layer);
         } catch (e) {  }
-		display_layer = L.layerGroup();
+		display_layer = L.markerClusterGroup();
 
 		d["results"].forEach(function(dd) {
             photos[dd.id] = dd;
 			var mk = L.circleMarker([dd.lat, dd.lng], {
 				color: 'red',
 				fillColor: 'blue',
-				radius: 10,
-				weight: 5,
+				radius: 5,
+				weight: 2,
 				fillOpacity: 0.5
 			}).addTo(display_layer);
 			
