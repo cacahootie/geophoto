@@ -35,6 +35,7 @@ div#content {
 img.gallery {
 	width: 100%;
 	vertical-align: middle;
+	image-orientation: from-image;
 }
 
 .vhelper {
