@@ -1,20 +1,7 @@
 
-var MapState = Backbone.Model.extend({
-    defaults: {
-        mapCenter: [33, -112],
-        mapZoom: 4
-    }
-});
-
-
-var MapState = new MapState();
 var MapView = BaseView.extend({
     el: '#main',
     template: $("#mapview_templ").html(),
-    set_state: function (e) {
-        MapState.set('mapCenter', this.map.getCenter());
-        MapState.set('mapZoom', this.map.getZoom());
-    },
     initialize: function (params) {
         this.url = params.url;
         this.photo = params.photo;
@@ -22,21 +9,15 @@ var MapView = BaseView.extend({
     },
     render: function(){
         BaseView.prototype.render.call(this);
-        var mapCenter = MapState.get('mapCenter');
-        var mapZoom = MapState.get('mapZoom');
         this.map = L.map(
             'map', this.settings
-        ).setView(mapCenter, mapZoom);
+        ).setView([33, -112],4)
         
         underlay = L.tileLayer(
             'https://otile1-s.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png'
         ).addTo(this.map);
         
         var self = this;
-        this.map.on('dragend', function (e) {
-            self.set_state(e);
-        });
-
         d3.json(this.url, function(d){
             self.load_layer(d);
             if (self.photo) {
