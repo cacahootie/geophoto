@@ -50,11 +50,14 @@ var MapView = BaseView.extend({
     display_layer: false,
     source_layer: false,
     photo_selected: function(d) {
+        var photo;
         if (d.src) {
-            $('#gallery-photo').attr('src',d.src);
+            photo = d;
         } else {
-            $('#gallery-photo').attr('src',this.photos[d].src);
+            photo = this.photos[d];
         }
+        $('#gallery-photo').attr('src',photo.src);
+        this.map.setView([photo.lat, photo.lng]);
     },
     load_layer: function(d) {
         var map = this.map;
