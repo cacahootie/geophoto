@@ -30,10 +30,12 @@ div#content {
 	background: #000000;
 	float: left;
 	white-space: nowrap;
+	text-align: center;
 }
 
 img.gallery {
-	width: 100%;
+	width: 95%;
+	height: auto;
 	vertical-align: middle;
 	image-orientation: from-image;
 }

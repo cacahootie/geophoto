@@ -1,3 +1,5 @@
+import subprocess
+
 from flask.ext.script import Manager
 
 from geophoto import app
@@ -7,7 +9,9 @@ manager = Manager(app)
 
 @manager.command
 def load():
+    subp = subprocess.Popen('mogrify -path geocoded -auto-orient ./geocoded_in/*.jpg', shell=True)
     models.process_photos()
+    subp.wait()
 
 @manager.command
 def run():
