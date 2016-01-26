@@ -11,6 +11,7 @@ img_path = './geophoto/static/img/geocoded'
 web_path = '/static/img/geocoded/'
 
 conn = psycopg2.connect("dbname='geophoto'")
+conn.autocommit = True
 
 def dms_to_decimal(value):
     value = str(value).replace('[','').replace(']','').replace(' ','')
@@ -39,13 +40,25 @@ def process_photos():
                 })
             except KeyError:
                 pass
-    itr = (
-        (x['id'], json.dumps(x), x['lat'],x['lng'])
-        for x in results
+    rows = [
+        {
+            'id': x['id'],
+            'lat': x['lat'],
+            'lng': x['lng'],
+            'doc': json.dumps(x)
+        } for x in results
         if isinstance(x['lat'],float)
-            and isinstance(x['lng'],float)
-    )
-    
+        and isinstance(x['lng'],float)
+    ]
+    with conn.cursor() as cur:
+        for row in rows:
+            try:
+                cur.execute("""
+                    insert into photos(id, lat, lng, doc)
+                    VALUES (%(id)s, %(lat)s, %(lng)s, %(doc)s)
+                """, row)
+            except psycopg2.IntegrityError:
+                print row
     return results
 
 def md5(fname):
