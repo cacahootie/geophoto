@@ -10,5 +10,7 @@ CREATE TABLE photos (
 
 CREATE TABLE tags (
     id varchar(32) REFERENCES photos (id),
-    tag text
+    tag text 
 );
+
+CREATE UNIQUE INDEX name ON tags (id, tag);

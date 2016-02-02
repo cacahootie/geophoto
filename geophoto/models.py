@@ -1,6 +1,7 @@
 
 from os import listdir, getcwd
 from os.path import isfile, join
+from itertools import repeat
 import json
 import hashlib
 
@@ -75,6 +76,30 @@ def photos():
         cur.execute("""
             select id, lat, lng, src from photos
         """)
+        return {"results": [dict(x) for x in cur] }
+
+def tags(id):
+    #return {"results": process_photos()}
+    with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        cur.execute("""
+            select tag from tags
+            where id = %s
+        """, (id,))
+        return {"results": [dict(x) for x in cur] }
+
+def add_tags(id, tags):
+    with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        try:
+            cur.executemany("""
+                insert into tags VALUES (%s, %s)
+            """, zip(repeat(id), tags))
+        except psycopg2.IntegrityError:
+            raise ValueError("Tag already exists for this photo.")
+
+        cur.execute("""
+            select tag from tags
+            where id = %s
+        """, (id,))
         return {"results": [dict(x) for x in cur] }
 
 if __name__ == '__main__':
