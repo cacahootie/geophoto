@@ -5,6 +5,7 @@ import json
 import hashlib
 
 import psycopg2
+import psycopg2.extras
 import exifread
 
 img_path = './geophoto/static/img/geocoded'
@@ -28,7 +29,9 @@ def process_photos():
         f for f in listdir(img_path) if isfile(join(img_path, f))
     )
     results = []
-    for fn in files:
+    for i, fn in enumerate(files):
+        if i % 100 == 0:
+            print "Processing %i row" % i
         tags = exifread.process_file(open(join(img_path,fn)), 'rb')
         for tag in tags:
             try:
@@ -40,22 +43,19 @@ def process_photos():
                 })
             except KeyError:
                 pass
-    rows = [
-        {
-            'id': x['id'],
-            'lat': x['lat'],
-            'lng': x['lng'],
-            'doc': json.dumps(x)
-        } for x in results
-        if isinstance(x['lat'],float)
-        and isinstance(x['lng'],float)
-    ]
+    rows = (
+        x for x in results
+            if isinstance(x['lat'],float)
+            and isinstance(x['lng'],float)
+    )
     with conn.cursor() as cur:
-        for row in rows:
+        for i, row in enumerate(rows):
+            if i % 100 == 0:
+                print "Processing %i row" % i
             try:
                 cur.execute("""
-                    insert into photos(id, lat, lng, doc)
-                    VALUES (%(id)s, %(lat)s, %(lng)s, %(doc)s)
+                    insert into photos(id, lat, lng, src)
+                    VALUES (%(id)s, %(lat)s, %(lng)s, %(src)s)
                 """, row)
             except psycopg2.IntegrityError:
                 print row
@@ -71,11 +71,11 @@ def md5(fname):
 
 def photos():
     #return {"results": process_photos()}
-    with conn.cursor() as cur:
+    with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         cur.execute("""
-            select doc from photos
+            select id, lat, lng, src from photos
         """)
-        return {"results": [dict(x[0]) for x in cur] }
+        return {"results": [dict(x) for x in cur] }
 
 if __name__ == '__main__':
     process_photos()
