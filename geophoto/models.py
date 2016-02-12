@@ -26,9 +26,6 @@ def dms_to_decimal(value):
     return float(dms[0]) + float(dms[1])/60 + secs/3600
 
 def process_photos():
-    with conn.cursor() as cur:
-        cur.execute("SELECT id FROM photos")
-        ids = set(x[0] for x in cur)
     files = (
         f for f in listdir(img_path) if isfile(join(img_path, f))
     )
