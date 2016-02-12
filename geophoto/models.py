@@ -15,7 +15,7 @@ web_path = '/static/img/geocoded/'
 conn = psycopg2.connect("dbname='geophoto'")
 conn.autocommit = True
 
-def dms_to_decimal(value):
+def dms_to_decimal(value, hemi):
     value = str(value).replace('[','').replace(']','').replace(' ','')
     dms = value.split(',')
     secs = dms[2].split('/')
@@ -23,7 +23,11 @@ def dms_to_decimal(value):
         secs = float(secs[0]) / float(secs[1])
     except IndexError:
         secs = float(dms[2])
-    return float(dms[0]) + float(dms[1])/60 + secs/3600
+    retval = float(dms[0]) + float(dms[1])/60 + secs/3600
+    hemi = str(hemi)
+    if hemi == 'W' or hemi == 'S':
+        retval *= -1.0
+    return retval
 
 def process_photos():
     files = (
@@ -37,8 +41,8 @@ def process_photos():
         try:
             results.append({
                 "src": web_path + fn,
-                "lat": dms_to_decimal(tags['GPS GPSLatitude']),
-                "lng": dms_to_decimal(tags['GPS GPSLongitude']),
+                "lat": dms_to_decimal(tags['GPS GPSLatitude'], tags['GPS GPSLatitudeRef']),
+                "lng": dms_to_decimal(tags['GPS GPSLongitude'], tags['GPS GPSLongitudeRef']),
                 "id": md5(fn)
             })
         except KeyError:

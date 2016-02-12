@@ -38,6 +38,8 @@ var MapView = BaseView.extend({
             photo = this.photos[d];
         }
         $('#gallery-photo').attr('src',photo.src);
+        $('#lat').text(photo.lat);
+        $('#lng').text(photo.lng);
         this.map.setView([photo.lat, photo.lng]);
     },
     load_layer: function(d) {
@@ -54,7 +56,7 @@ var MapView = BaseView.extend({
 			var mk = L.circleMarker([dd.lat, dd.lng], {
 				color: 'red',
 				fillColor: 'blue',
-				radius: 5,
+				radius: 10,
 				weight: 2,
 				fillOpacity: 0.5
 			}).addTo(display_layer);
