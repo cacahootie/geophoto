@@ -26,6 +26,9 @@ def dms_to_decimal(value):
     return float(dms[0]) + float(dms[1])/60 + secs/3600
 
 def process_photos():
+    with conn.cursor() as cur:
+        cur.execute("SELECT id FROM photos")
+        ids = set(x[0] for x in cur)
     files = (
         f for f in listdir(img_path) if isfile(join(img_path, f))
     )
@@ -34,16 +37,15 @@ def process_photos():
         if i % 100 == 0:
             print "Processing %i row" % i
         tags = exifread.process_file(open(join(img_path,fn)), 'rb')
-        for tag in tags:
-            try:
-                results.append({
-                    "src": web_path + fn,
-                    "lat": dms_to_decimal(tags['GPS GPSLatitude']),
-                    "lng": dms_to_decimal(tags['GPS GPSLongitude']),
-                    "id": md5(fn)
-                })
-            except KeyError:
-                pass
+        try:
+            results.append({
+                "src": web_path + fn,
+                "lat": dms_to_decimal(tags['GPS GPSLatitude']),
+                "lng": dms_to_decimal(tags['GPS GPSLongitude']),
+                "id": md5(fn)
+            })
+        except KeyError:
+            pass
     rows = (
         x for x in results
             if isinstance(x['lat'],float)
