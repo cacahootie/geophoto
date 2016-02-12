@@ -30,6 +30,7 @@ var MapView = BaseView.extend({
     },
     display_layer: false,
     source_layer: false,
+    last_marker: false,
     photo_selected: function(d) {
         var photo;
         if (d.src) {
@@ -43,9 +44,18 @@ var MapView = BaseView.extend({
         this.map.setView([photo.lat, photo.lng]);
     },
     load_layer: function(d) {
-        var map = this.map;
-        var photos = this.photos = {};
-    	var display_layer = this.display_layer;
+        var map = this.map,
+            photos = this.photos = {},
+    	    display_layer = this.display_layer,
+            default_style = {
+                color: 'red',
+                fillColor: 'blue',
+                radius: 10,
+                weight: 2,
+                fillOpacity: 0.5,
+            },
+            self = this;
+
     	try {
             map.removeLayer(display_layer);
         } catch (e) {  }
@@ -53,20 +63,26 @@ var MapView = BaseView.extend({
 
 		d["results"].forEach(function(dd) {
             photos[dd.id] = dd;
-			var mk = L.circleMarker([dd.lat, dd.lng], {
-				color: 'red',
-				fillColor: 'blue',
-				radius: 10,
-				weight: 2,
-				fillOpacity: 0.5
-			}).addTo(display_layer);
+			var mk = L.circleMarker([dd.lat, dd.lng], default_style)
+                .addTo(display_layer);
 			
             var self = this;
             mk.bindPopup(dd.id, {offset: L.point(0,-10)})
 				.on('mouseover', function show_tooltip () { this.openPopup(); })
 				.on('mouseout', function hide_tooltip () { this.closePopup(); })
-				.on('click', function map_click () {
-					router.navigate('photo/' + dd.id, true)
+				.on('click', function map_click (e) {
+                    try {
+                        self.last_marker.setStyle(default_style)
+                    } catch (e) {}
+                    e.target.setStyle({
+                        color: 'orange',
+                        fillColor: 'green',
+                        radius: 15,
+                        weight: 2,
+                        fillOpacity: 0.5
+                    });
+                    self.last_marker = e.target;
+					router.navigate('photo/' + dd.id, true);
 				})
 		})
 
