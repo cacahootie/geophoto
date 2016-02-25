@@ -4,6 +4,7 @@ from os.path import isfile, join
 from itertools import repeat
 import json
 import hashlib
+import subprocess
 
 import psycopg2
 import psycopg2.extras
@@ -30,6 +31,11 @@ def dms_to_decimal(value, hemi):
     return retval
 
 def process_photos():
+    subprocess.call(
+        "mogrify -path ./geophoto/static/img/geocoded -auto-orient ./geophoto/static/img/geocoded_in/*.jpg",
+        shell=True
+    )
+
     files = (
         f for f in listdir(img_path) if isfile(join(img_path, f))
     )
@@ -74,7 +80,6 @@ def md5(fname):
 
 
 def photos():
-    #return {"results": process_photos()}
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         cur.execute("""
             select id, lat, lng, src from photos
@@ -82,7 +87,6 @@ def photos():
         return {"results": [dict(x) for x in cur] }
 
 def tags(id):
-    #return {"results": process_photos()}
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         cur.execute("""
             select tag from tags
