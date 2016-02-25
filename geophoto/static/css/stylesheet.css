@@ -40,6 +40,11 @@ img.gallery {
 	image-orientation: from-image;
 }
 
+img.map_thumb {
+	width: 300px;
+	height: auto;
+}
+
 .vhelper {
 	display: inline-block;
 	height: 100%;

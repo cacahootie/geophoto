@@ -9,28 +9,17 @@ var MapView = BaseView.extend({
     },
     render: function(){
         BaseView.prototype.render.call(this);
+        
         this.map = L.map(
             'map', this.settings
-        ).setView([33, -112],4)
+        ).setView([33, -112],4);
         
-        underlay = L.tileLayer(
+        L.tileLayer(
             'https://otile1-s.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png'
         ).addTo(this.map);
         
-        var self = this;
-        d3.json(this.url, function(d){
-            self.load_layer(d);
-            if (self.photo) {
-                self.photo_selected(self.photo);
-            } else {
-                self.photo_selected(d.results[0])
-            }
-        });
-        return this;
+        d3.json(this.url, this.load_layer.bind(this));
     },
-    display_layer: false,
-    source_layer: false,
-    last_marker: false,
     photo_selected: function(d) {
         var photo;
         if (d.src) {
@@ -39,8 +28,6 @@ var MapView = BaseView.extend({
             photo = this.photos[d];
         }
         $('#gallery-photo').attr('src',photo.src);
-        $('#lat').text(photo.lat);
-        $('#lng').text(photo.lng);
         this.map.setView([photo.lat, photo.lng]);
     },
     load_layer: function(d) {
@@ -66,8 +53,10 @@ var MapView = BaseView.extend({
 			var mk = L.circleMarker([dd.lat, dd.lng], default_style)
                 .addTo(display_layer);
 			
-            var self = this;
-            mk.bindPopup(dd.id, {offset: L.point(0,-10)})
+            var self = this,
+                label = '<img src="' + dd.src + '" class="map_thumb"></img>';
+
+            mk.bindPopup(label, {offset: L.point(0,-10)})
 				.on('mouseover', function show_tooltip () { this.openPopup(); })
 				.on('mouseout', function hide_tooltip () { this.closePopup(); })
 				.on('click', function map_click (e) {
@@ -88,5 +77,11 @@ var MapView = BaseView.extend({
 
 		display_layer.addTo(map);
         this.display_layer = display_layer;
+
+        if (this.photo) {
+            this.photo_selected(this.photo);
+        } else {
+            this.photo_selected(d.results[0])
+        }
     }
 });
