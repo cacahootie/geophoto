@@ -56,7 +56,12 @@ var MapView = BaseView.extend({
             var self = this,
                 label = '<img src="' + dd.src + '" class="map_thumb"></img>';
 
-            mk.bindPopup(label, {offset: L.point(0,-10)})
+            mk.bindPopup(
+                    label, {
+                        offset: L.point(0,-10),
+                        className: 'custom-popup'
+                    }
+                )
 				.on('mouseover', function show_tooltip () { this.openPopup(); })
 				.on('mouseout', function hide_tooltip () { this.closePopup(); })
 				.on('click', function map_click (e) {

@@ -11,6 +11,7 @@ import psycopg2.extras
 import exifread
 
 img_path = './geophoto/static/img/geocoded'
+img_in_path = './geophoto/static/img/geocoded_in'
 web_path = '/static/img/geocoded/'
 
 conn = psycopg2.connect("dbname='geophoto'")
@@ -31,14 +32,20 @@ def dms_to_decimal(value, hemi):
     return retval
 
 def process_photos():
-    subprocess.call(
-        "mogrify -path ./geophoto/static/img/geocoded -auto-orient ./geophoto/static/img/geocoded_in/*.jpg",
-        shell=True
-    )
 
-    files = (
+    in_files = set(
+        f for f in listdir(img_in_path) if isfile(join(img_in_path, f))
+    )
+    files = in_files - set(
         f for f in listdir(img_path) if isfile(join(img_path, f))
     )
+
+    for f in files:
+        subprocess.call(
+            "mogrify -path ./geophoto/static/img/geocoded -auto-orient './geophoto/static/img/geocoded_in/{}'".format(f),
+            shell=True
+        )
+
     results = []
     for i, fn in enumerate(files):
         if i % 100 == 0:

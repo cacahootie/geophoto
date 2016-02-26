@@ -34,7 +34,8 @@ div#content {
 }
 
 img.gallery {
-	width: 95%;
+	max-width: 97%;
+	max-height: 97%;
 	height: auto;
 	vertical-align: middle;
 	image-orientation: from-image;
@@ -43,6 +44,10 @@ img.gallery {
 img.map_thumb {
 	width: 300px;
 	height: auto;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+	background-color: rgba(30,30,30,0.5);
 }
 
 .vhelper {
