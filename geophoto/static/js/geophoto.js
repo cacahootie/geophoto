@@ -36,24 +36,27 @@ var AppRouter = Backbone.Router.extend({
         }
     },
     home: function () {
-        this.loadView(MapView,{
+        this.loadView(PhotoMapView,{
             url:'/photos/'
         });
     },
     photo: function (d) {
-        if (this.view.photo_selected) {
-            this.view.photo_selected(d);
-        } else {
-            this.loadView(MapView,{
-                url:'/photos/',
-                photo:d
-            });
-        }
+        this.loadView(PhotoView, d);
     }
 });
 
-var base = new AppView();
-var router = new AppRouter();
+var base = new AppView(),
+    router = new AppRouter(),
+    photo_order = [],
+    photos = {};
+
 router.view = base;
-$(window).on("hashchange", router.hashChange);
-Backbone.history.start();
+
+$.getJSON('/photos/', function (d) {
+    _.each(d.results, function(dd) {
+        photo_order.push(dd.id);
+        photos[dd.id] = dd;
+    });
+    $(window).on("hashchange", router.hashChange);
+    Backbone.history.start();
+});

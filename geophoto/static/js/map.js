@@ -1,5 +1,5 @@
 
-var MapView = BaseView.extend({
+var PhotoMapView = BaseView.extend({
     el: '#main',
     template: $("#mapview_templ").html(),
     initialize: function (params) {
@@ -12,7 +12,7 @@ var MapView = BaseView.extend({
         
         this.map = L.map(
             'map', this.settings
-        ).setView([33, -112],4);
+        ).setView([36, 139],4);
         
         L.tileLayer(
             'https://otile1-s.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png'
@@ -20,73 +20,57 @@ var MapView = BaseView.extend({
         
         d3.json(this.url, this.load_layer.bind(this));
     },
-    photo_selected: function(d) {
-        var photo;
-        if (d.src) {
-            photo = d;
-        } else {
-            photo = this.photos[d];
-        }
-        $('#gallery-photo').attr('src',photo.src);
-        this.map.setView([photo.lat, photo.lng]);
-    },
-    load_layer: function(d) {
-        var map = this.map,
-            photos = this.photos = {},
-    	    display_layer = this.display_layer,
-            default_style = {
+    add_point: function(item, display_layer) {
+        var default_style = {
                 color: 'red',
                 fillColor: 'blue',
                 radius: 10,
                 weight: 2,
                 fillOpacity: 0.5,
             },
-            self = this;
+            label = '<img src="' + item.src + '" class="map_thumb"></img>',
+            mk = L.circleMarker([item.lat, item.lng], default_style)
+                .addTo(display_layer);
+        
+        mk.bindPopup(
+            label, {
+                offset: L.point(0,-10),
+                className: 'custom-popup'
+            }
+        )
+            .on('mouseover', function show_tooltip () { this.openPopup(); })
+            .on('mouseout', function hide_tooltip () { this.closePopup(); })
+            .on('click', function map_click (e) {
+                try {
+                    self.last_marker.setStyle(default_style)
+                } catch (e) {}
+                e.target.setStyle({
+                    color: 'orange',
+                    fillColor: 'green',
+                    radius: 15,
+                    weight: 2,
+                    fillOpacity: 0.5
+                });
+                self.last_marker = e.target;
+                router.navigate('photo/' + item.id, true);
+            });
+
+        return mk;
+    },
+    load_layer: function(d) {
+        var map = this.map,
+    	    display_layer = this.display_layer,
+            add_point = this.add_point;
 
     	try {
             map.removeLayer(display_layer);
         } catch (e) {  }
 		display_layer = L.markerClusterGroup();
 
-		d["results"].forEach(function(dd) {
-            photos[dd.id] = dd;
-			var mk = L.circleMarker([dd.lat, dd.lng], default_style)
-                .addTo(display_layer);
-			
-            var self = this,
-                label = '<img src="' + dd.src + '" class="map_thumb"></img>';
-
-            mk.bindPopup(
-                    label, {
-                        offset: L.point(0,-10),
-                        className: 'custom-popup'
-                    }
-                )
-				.on('mouseover', function show_tooltip () { this.openPopup(); })
-				.on('mouseout', function hide_tooltip () { this.closePopup(); })
-				.on('click', function map_click (e) {
-                    try {
-                        self.last_marker.setStyle(default_style)
-                    } catch (e) {}
-                    e.target.setStyle({
-                        color: 'orange',
-                        fillColor: 'green',
-                        radius: 15,
-                        weight: 2,
-                        fillOpacity: 0.5
-                    });
-                    self.last_marker = e.target;
-					router.navigate('photo/' + dd.id, true);
-				})
-		})
+		photo_order.forEach(function(id) {
+            add_point(photos[id], display_layer);
+		});
 
 		display_layer.addTo(map);
-        this.display_layer = display_layer;
-
-        if (this.photo) {
-            this.photo_selected(this.photo);
-        } else {
-            this.photo_selected(d.results[0])
-        }
     }
 });
