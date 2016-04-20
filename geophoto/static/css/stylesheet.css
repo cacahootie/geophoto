@@ -17,6 +17,27 @@ div#main {
 	height: 100%;
 }
 
+
+div.home-outer {
+	margin-top: 80px;
+}
+
+div.home-col {
+	min-height: 2em;
+}
+
+div.home-left {
+	background-color: orange;
+}
+
+div.home-center {
+	background-color: purple;
+}
+
+div.home-right {
+	background-color: green;
+}
+
 a#header {
 	position: absolute;
 	top: 10px;

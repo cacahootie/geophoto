@@ -36,7 +36,7 @@ var AppRouter = Backbone.Router.extend({
         }
     },
     home: function () {
-        this.loadView(PhotoMapView,{
+        this.loadView(HomeView,{
             url:'/photos/'
         });
     },

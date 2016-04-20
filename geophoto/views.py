@@ -10,7 +10,7 @@ index_path = os.path.join(basedir,'static','index.html')
 
 @app.route("/")
 def index():
-    return open(index_path).read()
+    return render_template('index.html')
 
 @app.route("/photos/")
 def photos():
