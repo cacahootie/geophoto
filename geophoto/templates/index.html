@@ -19,39 +19,19 @@
         <div id="container"></div>
 
         <script type="text/html" id="layout">
-            <a id="header" href="#"><h1>venturelog.io</h1></a>
-            <div id="main"></div>
+            {% include 'layout.html' %}
         </script>
 
         <script type="text/html" id="home_templ">
-            <div class="home-outer row">
-                <div class="col-md-4 home-col home-left"></div>
-                <div class="col-md-4 home-col home-center">
-                    <div class="home-item">Item 1</div>
-                    <div class="home-item">Item 2</div>
-                    <div class="home-item">Item 3</div>
-                </div>
-                <div class="col-md-4 home-col home-right"></div>
-            </div>
+            {% include 'home.html' %}
         </script>
 
         <script type="text/html" id="mapview_templ">
-            <div id="map"></div>
+            {% include 'map.html' %}
         </script>
 
         <script type="text/html" id="photoview_templ">
-            <div id="content">
-                <div class="vhelper"></div>
-                <img id="photo"></img>
-            </div>
-        </script>
-
-        <script type="text/html" id="upload_form">
-            <h1>Up Lode</h1>
-            <div id="upload_container">
-                <div id='editor_holder'></div>
-                <button id='submit'>Submit</button>
-            </div>
+            {% include 'photoview.html' %}
         </script>
 
         <!-- Prereqs -->
