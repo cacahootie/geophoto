@@ -31,11 +31,34 @@ div.home-left {
 }
 
 div.home-center {
-	background-color: purple;
+	background-color: rgb(234, 234, 234);
 }
 
 div.home-right {
 	background-color: green;
+}
+
+a.home-item {
+	text-decoration: none;
+}
+
+div.home-item {
+	border: 1px solid black;
+	margin: 1px;
+	padding: 5px;
+}
+
+div.home-item-headline {
+	color: black;
+	font-weight: 500;
+}
+
+div.home-item-headline:hover {
+	font-weight: 700;
+}
+
+div.home-item-leader {
+	text-decoration: blink;
 }
 
 a#header {
