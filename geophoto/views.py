@@ -16,6 +16,14 @@ def index():
 def photos():
     return jsonify(models.photos())
 
+@app.route("/articles/")
+def articles():
+    return jsonify(models.articles())
+
+@app.route("/articles/<key>/")
+def article(key):
+	return jsonify(models.article(key))
+
 @app.route("/tags/<id>/", methods=["GET",]) 
 def tags(id):
     return jsonify(models.tags(id))

@@ -26,12 +26,20 @@
             {% include 'home.html' %}
         </script>
 
+        <script type="text/html" id="home_item_templ">
+            {% include 'home_item.html' %}
+        </script>
+
         <script type="text/html" id="mapview_templ">
             {% include 'map.html' %}
         </script>
 
         <script type="text/html" id="photoview_templ">
             {% include 'photoview.html' %}
+        </script>
+
+        <script type="text/html" id="article_templ">
+            {% include 'article.html' %}
         </script>
 
         <!-- Prereqs -->
@@ -52,6 +60,7 @@
         <script src="/static/js/home.js" type="text/javascript"></script>
         <script src="/static/js/map.js" type="text/javascript"></script>
         <script src="/static/js/photo.js" type="text/javascript"></script>
+        <script src="/static/js/article.js" type="text/javascript"></script>
         <script src="/static/js/geophoto.js" type="text/javascript"></script>
     </body>
 </html>

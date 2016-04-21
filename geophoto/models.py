@@ -12,6 +12,7 @@ import exifread
 
 img_path = './geophoto/static/img/geocoded'
 img_in_path = './geophoto/static/img/geocoded_in'
+article_path = './geophoto/articles'
 web_path = '/static/img/geocoded/'
 
 conn = psycopg2.connect("dbname='geophoto'")
@@ -31,8 +32,12 @@ def dms_to_decimal(value, hemi):
         retval *= -1.0
     return retval
 
-def process_photos():
+def process_articles():
+    in_files = set(
+        f for f in listdir(article_path) if isfile(join(article_path, f))
+    )
 
+def process_photos():
     in_files = set(
         f for f in listdir(img_in_path) if isfile(join(img_in_path, f))
     )
@@ -71,8 +76,8 @@ def process_photos():
                 print "Processing %i row" % i
             try:
                 cur.execute("""
-                    insert into photos(id, lat, lng, src)
-                    VALUES (%(id)s, %(lat)s, %(lng)s, %(src)s)
+                    insert into items(id, lat, lng, src, itemtype)
+                    VALUES (%(id)s, %(lat)s, %(lng)s, %(src)s, 'photo')
                 """, row)
             except psycopg2.IntegrityError:
                 print row
@@ -89,9 +94,28 @@ def md5(fname):
 def photos():
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         cur.execute("""
-            select id, lat, lng, src from photos
+            select id, lat, lng, src from items
+            where itemtype = 'photo'
         """)
         return {"results": [dict(x) for x in cur] }
+
+def articles():
+    articles = []
+    with open(join(article_path, 'index.json'), 'rb') as f:
+        article_index = json.load(f)
+        for key, item in article_index.items():
+            item['key'] = key
+            articles.append(item)
+    return { "results": articles }
+
+def article(key):
+    with open(join(article_path, 'index.json'), 'rb') as f:
+        article_meta = json.load(f)[key]
+
+    with open(join(article_path, key), 'rb') as f:
+        article_meta['body'] = f.read()
+    
+    return article_meta
 
 def tags(id):
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:

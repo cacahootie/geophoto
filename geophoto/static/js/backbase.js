@@ -4,14 +4,23 @@ var BaseView = Backbone.View.extend({
     },
     data: null,
     render: function () {
-        if (this.data) {
+        var rendered;
+        if (this.data) {    
             try {
-                this.$el.html(Mustache.to_html(this.template,this.data.toJSON()));
+                rendered = Mustache.to_html(this.template,this.data.toJSON());
             } catch (e) {
-                this.$el.html(Mustache.to_html(this.template,this.data));
-            }
+                rendered = Mustache.to_html(this.template,this.data);
+            }  
+        } else {
+            rendered = this.template;
         }
-        else this.$el.html(this.template);
+        
+        if (this.parent) {
+            $(this.parent).append(rendered);
+        } else {
+            this.$el.html(rendered);
+        }
+
         return this;
     }
 });

@@ -1,15 +1,20 @@
 DROP TABLE IF EXISTS tags;
-DROP TABLE IF EXISTS photos;
+DROP TABLE IF EXISTS items;
+DROP TYPE IF EXISTS itemtypes;
 
-CREATE TABLE photos (
+CREATE TYPE itemtypes AS ENUM ('photo','article');
+
+CREATE TABLE items (
     id varchar(32) PRIMARY KEY,
+    itemtype itemtypes,
     lat double precision,
     lng double precision,
-    src text
+    src text,
+    body text
 );
 
 CREATE TABLE tags (
-    id varchar(32) REFERENCES photos (id),
+    id varchar(32) REFERENCES items (id),
     tag text 
 );
 

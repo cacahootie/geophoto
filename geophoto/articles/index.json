@@ -1,0 +1,18 @@
+{
+	"ichiran":{
+		"headline":"Ichiran Ramen",
+		"leader":"customizable ramen in a private booth"
+	},
+	"tokyostation":{
+		"headline":"Tokyo Station",
+		"leader":"heart of the Shinkansen system"
+	},
+	"kinosakionsen":{
+		"headline":"Kinosaki Onsen",
+		"leader":"experience a traditional Japanese onsen and ryokan"
+	},
+	"tokyoarrival":{
+		"headline":"Arrival in Tokyo from Overseas",
+		"leader":"what you need to know to make your touchdown smooth"
+	}
+}
