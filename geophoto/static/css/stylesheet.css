@@ -53,6 +53,10 @@ div.home-item-headline {
 	font-weight: 500;
 }
 
+div.home-item-leader {
+	margin: 10px;
+}
+
 div.home-item-headline:hover {
 	font-weight: 700;
 }

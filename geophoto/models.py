@@ -1,4 +1,5 @@
 
+import codecs
 from os import listdir, getcwd
 from os.path import isfile, join
 from itertools import repeat
@@ -9,6 +10,7 @@ import subprocess
 import psycopg2
 import psycopg2.extras
 import exifread
+import markdown
 
 img_path = './geophoto/static/img/geocoded'
 img_in_path = './geophoto/static/img/geocoded_in'
@@ -107,8 +109,9 @@ def article(key):
     with open(join(article_path, 'index.json'), 'rb') as f:
         article_meta = json.load(f)[key]
 
-    with open(join(article_path, key), 'rb') as f:
-        article_meta['body'] = f.read()
+    with codecs.open(join(article_path, key), 'r', "utf-8") as f:
+        body = f.read()
+        article_meta['body'] = markdown.markdown(body, encoding="utf-8")
     
     return article_meta
 
