@@ -32,11 +32,6 @@ def dms_to_decimal(value, hemi):
         retval *= -1.0
     return retval
 
-def process_articles():
-    in_files = set(
-        f for f in listdir(article_path) if isfile(join(article_path, f))
-    )
-
 def process_photos():
     in_files = set(
         f for f in listdir(img_in_path) if isfile(join(img_in_path, f))
