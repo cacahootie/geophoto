@@ -52,7 +52,7 @@ var PhotoMapView = BaseView.extend({
                     fillOpacity: 0.5
                 });
                 self.last_marker = e.target;
-                router.navigate('photo/' + item.id, true);
+                router.navigate('photos/' + item.id, true);
             });
 
         return mk;

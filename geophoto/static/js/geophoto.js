@@ -13,8 +13,10 @@ var AppRouter = Backbone.Router.extend({
     routes: {
         "":"home",
         "map":"map",
-        "photo/:id":"photo",
-        "articles/:key":"article"
+        "photos/:id":"photo",
+        "photos":"photos",
+        "articles/:key":"article",
+        "articles":"articles"
     },
     loadView: function(view,params,coll) {
         $('#main').empty()
@@ -43,14 +45,21 @@ var AppRouter = Backbone.Router.extend({
     article: function (key) {
         this.loadView(ArticleView,key);
     },
+    articles: function () {
+        this.loadView(HomeView);
+    },
     map: function () {
         this.loadView(PhotoMapView,{
             url:'/photos/'
         });
     },
-    photo: function (d) {
-        this.loadView(PhotoView, d);
+    photo: function (key) {
+        this.loadView(PhotoView, key);
+    },
+    photos: function () {
+        this.loadView(HomeView);
     }
+
 });
 
 var base = new AppView(),

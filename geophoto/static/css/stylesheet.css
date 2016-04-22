@@ -19,7 +19,7 @@ div#main {
 
 
 div.home-outer {
-	margin-top: 80px;
+	margin-top: 50px;
 }
 
 div.home-col {
@@ -27,15 +27,15 @@ div.home-col {
 }
 
 div.home-left {
-	background-color: orange;
+	
 }
 
 div.home-center {
-	background-color: rgb(234, 234, 234);
+	
 }
 
 div.home-right {
-	background-color: green;
+	
 }
 
 a.home-item {
@@ -43,8 +43,9 @@ a.home-item {
 }
 
 div.home-item {
+	background-color: rgb(234, 234, 234);
 	border: 1px solid black;
-	margin: 1px;
+	margin: 10px;
 	padding: 5px;
 }
 
@@ -62,13 +63,26 @@ div.home-item-headline:hover {
 }
 
 div.article-outer {
-	margin-top: 30px;
+	margin-top: 0px;
+	padding-top: 45px;
+	padding-bottom: 20px;
 	height: 100%;
+	overflow: scroll;
 }
 
 div.article {
-	overflow: scroll;
-	height: 90%;
+	
+}
+
+a.article-goback {
+	color: gray;
+	text-decoration: none;
+}
+
+a.article-goback:hover {
+	color: gray;
+	font-style: italic;
+	text-decoration: none;
 }
 
 h1.article-headline {
@@ -78,28 +92,77 @@ h1.article-headline {
 
 div.article-leader {
 	margin: 10px;
+	font-style: italic;
 }
 
-a#header {
+div.article img {
+	max-width: 100%;
+	height: auto;
+}
+
+div.imgix-fluid.landscape {
+	padding-bottom: 66%;
+}
+
+div.imgix-fluid.portrait {
+	height: 300px
+}
+
+div.imgix-fluid.pano {
+	padding-bottom: 23%;
+}
+
+div#header {
+	position: absolute;
 	width: 100%;
 	height: 3em;
 	display: block;
-	background: rgba(0,0,0,0.5);
+	background: rgba(0,0,0,0.8);
 	color: rgb(166,166,166);
+	z-index: 10;
 }
 
-a#header:hover {
-	color: rgb(200,200,200);
+a.homelink {
+	font-size: xx-large;
+	font-weight: 700;
+	color: rgb(166,166,166);
+	margin: 0;
+	display: inline;
 	text-decoration: none;
 }
 
-a#header > h1 {
-	margin: 0 10px 10px 10px;
+a.homelink {
+	text-decoration: none;
+}
+
+a.homelink:hover {
+	color: rgb(200,200,200);
+}
+
+a.navlink {
+	color: rgb(166,166,166);
+	font-size: large;
+	font-weight: 500;
+	float: right;
+	display: inline;
+	position: relative;
+	margin: 0 15px 0 0;
+	text-decoration: none;
+	top: 16px;
+}
+
+a.navlink:hover {
+	color: rgb(200,200,200);
 }
 
 div#map {
-	height: 100%;
+	/* top: -14px; */
+	height: calc(100% - 14px);
 	width: 100%;
+}
+
+div.leaflet-top {
+	top: 50px;
 }
 
 img#photo {
