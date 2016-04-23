@@ -71,7 +71,7 @@ div.article-outer {
 }
 
 div.article {
-	
+	margin: 10px;
 }
 
 a.article-goback {
@@ -98,6 +98,10 @@ div.article-leader {
 div.article img {
 	max-width: 100%;
 	height: auto;
+}
+
+div.imgix-fluid {
+	margin: 1em 0 1em 0;
 }
 
 div.imgix-fluid.landscape {

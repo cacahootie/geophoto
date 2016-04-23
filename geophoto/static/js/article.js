@@ -15,6 +15,10 @@ var ArticleView = BaseView.extend({
                         autoInsertCSSBestPractices: true
                     });
                 });
+
+                $(this.el).find('div.imgix-fluid').on('click', function (d) {
+                    window.location = $(this).data('src');
+                });
                 
 	        }, this)
         );
