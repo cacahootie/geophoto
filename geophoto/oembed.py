@@ -4,9 +4,12 @@ from urlparse import urlparse
 
 from flask import current_app as app
 
+def slashEnding(url):
+    path = urlparse(url).path
+    return path + ('' if path.endswith('/') else '/')
+
 def oembed(url):
-    path = urlparse(url).path + '' if \
-        urlparse(url).path.endswith('/') else '/'
+    path = slashEnding(url) + "?format=json"
     with app.test_client() as c:
         rv = c.get(path)
         try:
