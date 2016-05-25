@@ -5,7 +5,8 @@ from urlparse import urlparse
 from flask import current_app as app
 
 def oembed(url):
-    path = '/' + urlparse(url).fragment + '/'
+    path = urlparse(url).path + '' if \
+        urlparse(url).path.endswith('/') else '/'
     with app.test_client() as c:
         rv = c.get(path)
         try:
