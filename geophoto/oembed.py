@@ -26,8 +26,8 @@ def oembed(url):
         "author_url": "http://www.venturelog.io",
         "height": "300",
         "width": "800",
-        "thumbnail_width": "384",
-        "thumbnail_height": "225",
-        "thumbnail_url": "",
+        "thumbnail_width": "200",
+        "thumbnail_height": str(int(200 * float(3)/4)),
+        "thumbnail_url": article['thumbnail'] + "?w=200&h=150&auto=compress,format",
         "html": '<div><p>' + article['headline'] + '</p><p>' + article['leader'] + '</p></div>'
     }

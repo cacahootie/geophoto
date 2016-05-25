@@ -1,18 +1,22 @@
 {
 	"ichiran":{
 		"headline":"Ichiran Ramen",
+		"thumbnail":"https://venturelog.imgix.net/articles/kinosakionsen/04.jpg",
 		"leader":"customizable ramen in a private booth"
 	},
 	"tokyostation":{
 		"headline":"Tokyo Station",
+		"thumbnail":"https://venturelog.imgix.net/articles/kinosakionsen/04.jpg",
 		"leader":"heart of the Shinkansen system"
 	},
 	"kinosakionsen":{
 		"headline":"Kinosaki Onsen",
+		"thumbnail":"https://venturelog.imgix.net/articles/kinosakionsen/04.jpg",
 		"leader":"experience a traditional Japanese onsen and ryokan"
 	},
 	"tokyoarrival":{
 		"headline":"Arrival in Tokyo from Overseas",
+		"thumbnail":"https://venturelog.imgix.net/articles/kinosakionsen/04.jpg",
 		"leader":"what you need to know to make your touchdown smooth"
 	}
 }
