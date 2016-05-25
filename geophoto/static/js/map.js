@@ -4,6 +4,8 @@ var PhotoMapView = BaseView.extend({
     template: $("#mapview_templ").html(),
     initialize: function (params) {
         this.url = params.url;
+        this.item_type = params.type;
+        this.item_id = params.id;
         this.photo = params.photo;
         BaseView.prototype.initialize.call(this);
     },

@@ -3,7 +3,7 @@ import os
 
 from flask import Flask, jsonify, render_template, request, abort
 
-from geophoto import app, models
+from geophoto import app, models, oembed
 
 basedir = os.path.dirname(os.path.abspath(__file__))
 index_path = os.path.join(basedir,'static','index.html')
@@ -27,6 +27,10 @@ def article(key):
 @app.route("/tags/<id>/", methods=["GET",]) 
 def tags(id):
     return jsonify(models.tags(id))
+
+@app.route("/services/oembed/", methods=["GET",]) 
+def oembed_service():
+    return jsonify(oembed.oembed())
 
 @app.route("/tags/<id>/", methods=["POST",]) 
 def add_tags(id):
