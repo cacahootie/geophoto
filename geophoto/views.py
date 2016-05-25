@@ -44,7 +44,12 @@ def tags(id):
 
 @app.route("/services/oembed/", methods=["GET",]) 
 def oembed_service():
-    return jsonify(oembed.oembed(request.args.get('url')))
+    fmt = request.args.get("format")
+    if fmt is None or fmt == 'json':
+        return jsonify(oembed.oembed(request.args.get('url')))
+    elif fmt == 'html':
+        return oembed.oembed(request.args.get('url'))
+    abort(500)
 
 @app.route("/tags/<id>/", methods=["POST",]) 
 @spa

@@ -3,10 +3,18 @@ from json import loads
 from urlparse import urlparse
 
 from flask import current_app as app
+from flask import request
 
 def slashEnding(url):
     path = urlparse(url).path
     return path + ('' if path.endswith('/') else '/')
+
+def thumbUrl(thumb):
+    return "https://venturelog.imgix.net/articles/" + thumb + \
+        "?w=200&h=150&fit=crop&crop=entropy&auto=compress,format"
+
+def html(article):
+    return '<div><p>' + article['headline'] + '</p><p>' + article['leader'] + '</p></div>'
 
 def oembed(url):
     path = slashEnding(url) + "?format=json"
@@ -18,6 +26,8 @@ def oembed(url):
             print url
             print path
             raise
+    if request.args.get("format") == "html":
+        return html(article)
     return {
         "success": True,
         "type": "rich",
@@ -31,6 +41,6 @@ def oembed(url):
         "width": "800",
         "thumbnail_width": "200",
         "thumbnail_height": str(int(200 * float(3)/4)),
-        "thumbnail_url": article['thumbnail'] + "?w=200&h=150&auto=compress,format",
-        "html": '<div><p>' + article['headline'] + '</p><p>' + article['leader'] + '</p></div>'
+        "thumbnail_url": thumbUrl(article['thumbnail']),
+        "html": html(article)
     }
