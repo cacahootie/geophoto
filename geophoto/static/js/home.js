@@ -5,7 +5,7 @@ var HomeView = BaseView.extend({
     initialize: function () {
         BaseView.prototype.initialize.call(this);
         var subviews = [];
-        $.getJSON('/articles/?format=json', function (d) {
+        $.getJSON('/articles?format=json', function (d) {
         	_.forEach(d['results'], function (dd) {
         		subviews.push(new HomeItem('#home-items', dd));
         	});

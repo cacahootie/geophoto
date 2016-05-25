@@ -22,22 +22,22 @@ def spa(vfunc):
 def index():
     return render_template('index.html')
 
-@app.route("/photos/")
+@app.route("/photos")
 @spa
 def photos():
     return jsonify(models.photos())
 
-@app.route("/articles/")
+@app.route("/articles")
 @spa
 def articles():
     return jsonify(models.articles())
 
-@app.route("/articles/<key>/")
+@app.route("/articles/<key>")
 @spa
 def article(key):
 	return jsonify(models.article(key))
 
-@app.route("/tags/<id>/", methods=["GET",]) 
+@app.route("/tags/<id>", methods=["GET",]) 
 @spa
 def tags(id):
     return jsonify(models.tags(id))
@@ -51,7 +51,7 @@ def oembed_service():
         return oembed.oembed(request.args.get('url'))
     abort(500)
 
-@app.route("/tags/<id>/", methods=["POST",]) 
+@app.route("/tags/<id>", methods=["POST",]) 
 @spa
 def add_tags(id):
     try:

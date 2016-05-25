@@ -201,3 +201,7 @@ img.map_thumb {
 	height: 100%;
 	vertical-align: middle;
 }
+
+.imgix-fluid {
+	cursor: pointer;
+}

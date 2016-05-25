@@ -77,7 +77,7 @@ var base = new AppView(),
 
 router.view = base;
 
-$.getJSON('/photos/?format=json', function (d) {
+$.getJSON('/photos?format=json', function (d) {
     _.each(d.results, function(dd) {
         photo_order.push(dd.id);
         photos[dd.id] = dd;

@@ -5,10 +5,6 @@ from urlparse import urlparse
 from flask import current_app as app
 from flask import request
 
-def slashEnding(url):
-    path = urlparse(url).path
-    return path + ('' if path.endswith('/') else '/')
-
 def thumbUrl(thumb):
     return "https://venturelog.imgix.net/articles/" + thumb + \
         "?w=200&h=150&fit=crop&crop=entropy&auto=compress,format"
@@ -17,7 +13,7 @@ def html(article):
     return '<div><p>' + article['headline'] + '</p><p>' + article['leader'] + '</p></div>'
 
 def oembed(url):
-    path = slashEnding(url) + "?format=json"
+    path = urlparse(url).path + "?format=json"
     with app.test_client() as c:
         rv = c.get(path)
         try:
