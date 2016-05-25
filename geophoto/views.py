@@ -30,7 +30,7 @@ def tags(id):
 
 @app.route("/services/oembed/", methods=["GET",]) 
 def oembed_service():
-    return jsonify(oembed.oembed())
+    return jsonify(oembed.oembed(request.args.get('url')))
 
 @app.route("/tags/<id>/", methods=["POST",]) 
 def add_tags(id):
