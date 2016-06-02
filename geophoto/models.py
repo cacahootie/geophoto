@@ -150,6 +150,3 @@ def add_tags(id, tags):
             where id = %s
         """, (id,))
         return {"results": [dict(x) for x in cur] }
-
-if __name__ == '__main__':
-    process_photos()
