@@ -1,6 +1,6 @@
 DROP SCHEMA IF EXISTS geophoto CASCADE;
 
-CREATE SCHEMA GEOPHOTO;
+CREATE SCHEMA geophoto;
 
 CREATE TYPE geophoto.itemtypes AS ENUM ('photo','article');
 
