@@ -17,7 +17,7 @@ img_in_path = './geophoto/static/img/geocoded_in'
 article_path = './geophoto/articles'
 web_path = '/static/img/geocoded/'
 
-conn = psycopg2.connect("dbname='geophoto'")
+conn = psycopg2.connect("dbname='relately'")
 conn.autocommit = True
 
 def dms_to_decimal(value, hemi):
@@ -73,7 +73,7 @@ def process_photos():
                 print "Processing %i row" % i
             try:
                 cur.execute("""
-                    insert into items(id, lat, lng, src, itemtype)
+                    insert into geophoto.items(id, lat, lng, src, itemtype)
                     VALUES (%(id)s, %(lat)s, %(lng)s, %(src)s, 'photo')
                 """, row)
             except psycopg2.IntegrityError:
@@ -91,7 +91,7 @@ def md5(fname):
 def photos():
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         cur.execute("""
-            select id, lat, lng, src from items
+            select id, lat, lng, src from geophoto.items
             where itemtype = 'photo'
         """)
         return {"results": [dict(x) for x in cur] }
@@ -118,7 +118,7 @@ def article(key):
 def tags(id):
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         cur.execute("""
-            select tag from tags
+            select tag from geophoto.tags
             where id = %s
         """, (id,))
         return {"results": [dict(x) for x in cur] }
@@ -127,7 +127,7 @@ def add_tags(id, tags):
     with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         try:
             cur.executemany("""
-                insert into tags VALUES (%s, %s)
+                insert into geophoto.tags VALUES (%s, %s)
             """, zip(repeat(id), tags))
         except psycopg2.IntegrityError:
             raise ValueError("Tag already exists for this photo.")
