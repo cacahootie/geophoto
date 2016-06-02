@@ -34,24 +34,24 @@ def dms_to_decimal(value, hemi):
         retval *= -1.0
     return retval
 
-def process_photos():
-    in_files = set(
-        f for f in listdir(img_in_path) if isfile(join(img_in_path, f))
-    )
-    files = in_files - set(
-        f for f in listdir(img_path) if isfile(join(img_path, f))
-    )
+def _unprocessed_photos():
+    return set(f for f in listdir(img_in_path) if isfile(join(img_in_path, f)))
 
+def _processed_photos():
+    return set(f for f in listdir(img_path) if isfile(join(img_path, f)))
+
+def reorient(files):
     for f in files:
         subprocess.call(
             "mogrify -path ./geophoto/static/img/geocoded -auto-orient './geophoto/static/img/geocoded_in/{}'".format(f),
             shell=True
         )
 
+def get_photo_metadata(files):
     results = []
     for i, fn in enumerate(files):
         if i % 100 == 0:
-            print "Processing %i row" % i
+            print "Extracting metadata for row {}".format(i)
         tags = exifread.process_file(open(join(img_path,fn)), 'rb')
         try:
             results.append({
@@ -67,6 +67,9 @@ def process_photos():
             if isinstance(x['lat'],float)
             and isinstance(x['lng'],float)
     )
+    return rows
+
+def insert_photo_metadata(rows):
     with conn.cursor() as cur:
         for i, row in enumerate(rows):
             if i % 100 == 0:
@@ -75,10 +78,20 @@ def process_photos():
                 cur.execute("""
                     insert into geophoto.items(id, lat, lng, src, itemtype)
                     VALUES (%(id)s, %(lat)s, %(lng)s, %(src)s, 'photo')
+                    ON CONFLICT DO NOTHING
                 """, row)
             except psycopg2.IntegrityError:
                 print row
-    return results
+
+def process_photos():
+    files = _unprocessed_photos() - _processed_photos()
+    if len(files) < 0:
+        reorient()
+    else:
+        files = _processed_photos()
+    rows = get_photo_metadata(files)
+    insert_photo_metadata(rows)
+    return rows
 
 def md5(fname):
     hf = hashlib.md5()
